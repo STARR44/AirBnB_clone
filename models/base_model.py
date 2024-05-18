@@ -10,13 +10,15 @@ class BaseModel:
         """Initializes instance of class"""
 
         if kwargs:
-            for key, value in items():
-                if key in "__class__":
-                    continue
-                if key in ("created_at", "updated_at"):
+            for key, value in kwargs.items():
+                if key == "created_at":
+                elif key == "updated_at":
                     value = datetime.datetime.fromisoformat(value)
-                    setattr(self, key, value)
+                elif key == "__class__":
+                    pass
                 else:
+                    setattr(self, key, value)
+        else:
                     self.id = str(uuid.uuid4())
                     self.created_at = datetime.datetime.now()
                     self.updated_at = datetime.datetime.now()
@@ -28,7 +30,7 @@ class BaseModel:
         """updates <updated_at> with the current datetime"""
         updated_at = datetime.datetime.now()
 
-   def to_dict(self):
+    def to_dict(self):
         """returns a dictionary containing\
             all keys/values of __dict__ of the instance"""
         self.__dict__['__class__'] = 'BaseModel'
