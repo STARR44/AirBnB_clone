@@ -2,6 +2,8 @@
 """This module defines the baseModel class"""
 import uuid
 import datetime
+from .__init__ import storage
+
 
 class BaseModel:
     """This class define all common attributes/methods for other classes"""
@@ -11,6 +13,7 @@ class BaseModel:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
         self.updated_at = datetime.datetime.now()
+        storage.new() # Set __objects if instance is new
 
     def __str__(self):
         """return string representation of t object"""
@@ -19,6 +22,7 @@ class BaseModel:
     def save(self):
         """updates <updated_at> with the current datetime"""
         updated_at = datetime.datetime.now()
+        storage.save() # Serialize date to JSON file
 
     def to_dict(self):
         """returns a dictionary containing\
