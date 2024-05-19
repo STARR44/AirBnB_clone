@@ -9,19 +9,17 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Initializes instance of class"""
 
-        if kwargs:
-            for key, value in kwargs.items():
-                if key == "created_at":
-                elif key == "updated_at":
-                    value = datetime.datetime.fromisoformat(value)
-                elif key == "__class__":
-                    pass
-                else:
-                    setattr(self, key, value)
+        if not kwargs:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
         else:
-                    self.id = str(uuid.uuid4())
-                    self.created_at = datetime.datetime.now()
-                    self.updated_at = datetime.datetime.now()
+            for key, value in kwargs.items():
+                if key not in ("__class__"):
+                    setattr(self, key, value)
+                elif key in ("created_at", "updated_at"):
+                    value = datetime.datetime.fromisoformat
+
     def __str__(self):
         """return string representation of t object"""
         return f"[BaseModel]({self.id}) {self.__dict__}"
@@ -33,7 +31,9 @@ class BaseModel:
     def to_dict(self):
         """returns a dictionary containing\
             all keys/values of __dict__ of the instance"""
-        self.__dict__['__class__'] = 'BaseModel'
-        self.__dict__['created_at'] = self.created_at.isoformat()
-        self.__dict__['updated_at'] = self.updated_at.isoformat()
-        return self.__dict__
+
+        new_dict = self.__dict__.copy()
+        new_dict['__class__'] = self.__class__.__name__
+        new_dict['created_at'] = self.created_at.isoformat()
+        new_dict['updated_at'] = self.updated_at.isoformat()
+        return new_dict
