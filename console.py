@@ -4,8 +4,8 @@ import cmd
 from models.base_model import BaseModel
 from models.__init__ import storage
 
-
 classes = {'BaseModel': BaseModel}
+
 
 class HBNBCommand(cmd.Cmd):
     """This class represents an interpreter"""
@@ -14,14 +14,39 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of a class"""
+
         if arg == "":
             print("*** class name missing ***")
         elif arg not in classes:
             print("** class doesn't exist **")
         else:
-            obj = classes[arg]() # create the instance
-            obj.save() #save instance
+            obj = classes[arg]()  # create the instance
+            obj.save()  # save instance
             print(obj.id)
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance"""
+
+        args = arg.split()
+        if arg == "":
+            print("*** class name missing ***")
+        elif args[0] not in classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            # Get dict representation of obj
+            key = f"{args[0]}.{args[1]}"
+            try:
+                obj_dict = storage.all()[key]
+
+                # Recreate obj
+                obj = classes[args[0]](**obj_dict)
+
+                print(obj)
+            except KeyError:
+                print("** no instance found **")
+
     def do_quit(self, arg):
         """Exits the program"""
         return True
