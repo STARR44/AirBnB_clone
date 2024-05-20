@@ -47,6 +47,25 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** no instance found **")
 
+    def do_destroy(self, arg):
+        """Deletes an instance based on class name and id"""
+
+        args = arg.split()
+        if arg == "":
+            print("*** class name missing ***")
+        elif args[0] not in classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            key = f"{args[0]}.{args[1]}"
+            objects = storage.all()
+            try:
+                objects.pop(key)  # delete key
+                storage.save()  # save changes
+            except KeyError:
+               print("** no instance found **")
+
     def do_quit(self, arg):
         """Exits the program"""
         return True
