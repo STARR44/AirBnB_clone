@@ -15,7 +15,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
-            storage.new() # Set __objects if instance is new
+            storage.new(self) # Set __objects if instance is new
         else:
             for key, value in kwargs.items():
                 if key not in ("__class__"):
