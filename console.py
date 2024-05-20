@@ -86,6 +86,41 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                print("** no instance found **")
 
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id"""
+
+        args = arg.split()
+        if not arg:
+            print("*** class name missing ***")
+        elif args[0] not in classes:
+            print("** class doesn't exit **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            key = f"{args[0]}.{args[1]}"
+            try:
+                obj_dict = objects[key]
+                obj = classes[args[0]](**obj_dict)
+
+                if len(args) == 2:
+                    print("** attribute name missing **")
+                elif len(args) == 3:
+                    print("** value missing **")
+                else:
+                    attr_name = args[2]
+                    attr_value = args[3]
+
+                    if args[2] in obj.__dict__:
+                        attr_type = type(obj.__dict__[attr_name])
+                        setattr(obj, args[2], attr_type(args[3]))
+
+                    else:
+                        setattr(obj, args[2], args[3])
+                    obj.save()
+
+            except KeyError:
+                print("** no instance found **")
+    
     def do_quit(self, arg):
         """Exits the program"""
         return True

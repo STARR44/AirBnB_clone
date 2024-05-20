@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines the baseModel class"""
 import uuid
-import datetime
+from datetime import datetime
 from .__init__ import storage
 
 
@@ -13,23 +13,25 @@ class BaseModel:
 
         if not kwargs:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             storage.new(self) # Set __objects if instance is new
         else:
             for key, value in kwargs.items():
-                if key not in ("__class__"):
+                if key not in ('created_at', 'updated_at', '__class__'):
                     setattr(self, key, value)
-                elif key in ("created_at", "updated_at"):
-                    value = datetime.datetime.fromisoformat
+            self.created_at = datetime.fromisoformat(kwargs.get('created_at'))
+            self.updated_at = datetime.fromisoformat(kwargs.get('updated_at'))
 
     def __str__(self):
         """return string representation of t object"""
-        return f"[BaseModel]({self.id}) {self.__dict__}"
+        return f"[BaseModel] ({self.id}) {self.__dict__}"
 
     def save(self):
         """updates <updated_at> with the current datetime"""
-        updated_at = datetime.datetime.now()
+
+        self.updated_at = datetime.now()
+        storage.new(self)
         storage.save() # Serialize data to JSON file
 
     def to_dict(self):
