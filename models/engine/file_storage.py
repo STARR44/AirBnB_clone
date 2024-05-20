@@ -22,7 +22,7 @@ class FileStorage:
         """
         
         obj_dict = obj.to_dict()
-        key = f"{obj_dict['__class__'}}.{obj.id}"
+        key = f"{obj_dict['__class__']}.{obj.id}"
         __objects[key] = obj_dict
 
     def save(self):

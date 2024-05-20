@@ -6,7 +6,7 @@ from .__init__ import storage
 
 
 class BaseModel:
-    """This class define all common attributes/methods for other classes"""
+    """This class defines all common attributes/methods for other classes"""
 
     def __init__(self):
         """Initializes instance of class"""
@@ -22,7 +22,7 @@ class BaseModel:
     def save(self):
         """updates <updated_at> with the current datetime"""
         updated_at = datetime.datetime.now()
-        storage.save() # Serialize date to JSON file
+        storage.save() # Serialize data to JSON file
 
     def to_dict(self):
         """returns a dictionary containing\
