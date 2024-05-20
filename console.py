@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models.__init__ import storage
 
 classes = {'BaseModel': BaseModel}
+objects = storage.all()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -12,6 +13,26 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb) '
 
+    def do_all(self, arg):
+        """Prints all string representation of all instances"""
+
+        obj_list = []
+        if not arg:
+            for key, value in objects.items():
+                class_name = key.split('.')[0]
+                obj = classes[class_name](**value)  # recreates obj
+                obj_list.append(str(obj))
+            print(obj_list)
+        elif arg and arg not in classes:
+            print("** class doesn't exist **")
+        else:
+            for key, value in objects.items():
+                class_name = key.split('.')[0]
+                if class_name == arg:
+                    obj = classes[arg](**value) 
+                    obj_list.append(str(obj))
+            print(obj_list)
+            
     def do_create(self, arg):
         """Creates a new instance of a class"""
 
@@ -38,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
             # Get dict representation of obj
             key = f"{args[0]}.{args[1]}"
             try:
-                obj_dict = storage.all()[key]
+                obj_dict = objects[key]
 
                 # Recreate obj
                 obj = classes[args[0]](**obj_dict)
@@ -59,7 +80,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = f"{args[0]}.{args[1]}"
-            objects = storage.all()
             try:
                 objects.pop(key)  # delete key
                 storage.save()  # save changes
