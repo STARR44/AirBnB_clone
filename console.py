@@ -37,7 +37,7 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of a class"""
 
         if arg == "":
-            print("*** class name missing ***")
+            print("** class name missing **")
         elif arg not in classes:
             print("** class doesn't exist **")
         else:
@@ -50,7 +50,7 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         if arg == "":
-            print("*** class name missing ***")
+            print("** class name missing **")
         elif args[0] not in classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         if arg == "":
-            print("*** class name missing ***")
+            print("** class name missing **")
         elif args[0] not in classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
 
         args = arg.split()
         if not arg:
-            print("*** class name missing ***")
+            print("** class name missing **")
         elif args[0] not in classes:
             print("** class doesn't exit **")
         elif len(args) == 1:
