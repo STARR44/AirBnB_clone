@@ -1,11 +1,21 @@
 #!/usr/bin/python3
 """This module contains the entry point of the interpreter"""
 import cmd
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 
 classes = {'BaseModel': BaseModel}
 objects = storage.all()
+
+
+def parse(line):
+    """Parse the line of arguments"""
+
+    pattern = r'"[^"]*"|\'[^\']*\'|[^\s]+'
+    match = re.findall(pattern, line)
+
+    return [e.strip("'\"") for e in match]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -48,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, arg):
         """Prints the string representation of an instance"""
 
-        args = arg.split()
+        args = parse(arg)
         if arg == "":
             print("** class name missing **")
         elif args[0] not in classes:
@@ -89,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
 
-        args = arg.split()
+        args = parse(arg)
         if not arg:
             print("** class name missing **")
         elif args[0] not in classes:
