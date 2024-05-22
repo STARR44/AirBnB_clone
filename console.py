@@ -3,9 +3,13 @@
 import cmd
 import re
 from models.base_model import BaseModel
+from models.user import User
 from models.__init__ import storage
 
-classes = {'BaseModel': BaseModel}
+classes = {
+            'BaseModel': BaseModel,
+            'User': User
+}
 objects = storage.all()
 
 
