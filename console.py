@@ -167,32 +167,32 @@ class HBNBCommand(cmd.Cmd):
                 if len(args) == 2:
                     print("** attribute name missing **")
 
-                try:
-                    print("Args[2]:", args[2])
-                    if type(eval(args[2])) == dict:
-                        for attr_name, attr_value in eval(args[2]).items():
+                else:
+                    try:
+                        if type(eval(args[2])) == dict:
+                            for attr_name, attr_value in eval(args[2]).items():
+                                if attr_name in obj.__dict__:
+                                    attr_type = type(obj.__dict__[attr_name])
+                                    setattr(obj, attr_name, attr_type(attr_value))
+                                else:
+                                    setattr(obj, attr_name, attr_value)
+                                obj.save()
+
+                    except NameError:
+                        if len(args) == 3:
+                            print("** value missing **")
+
+                        else:
+                            attr_name = args[2]
+                            attr_value = args[3]
+
                             if attr_name in obj.__dict__:
                                 attr_type = type(obj.__dict__[attr_name])
                                 setattr(obj, attr_name, attr_type(attr_value))
+
                             else:
                                 setattr(obj, attr_name, attr_value)
                             obj.save()
-
-                except NameError:
-                    if len(args) == 3:
-                        print("** value missing **")
-
-                    else:
-                        attr_name = args[2]
-                        attr_value = args[3]
-
-                        if attr_name in obj.__dict__:
-                            attr_type = type(obj.__dict__[attr_name])
-                            setattr(obj, attr_name, attr_type(attr_value))
-
-                        else:
-                            setattr(obj, attr_name, attr_value)
-                        obj.save()
 
             except KeyError:
                 print("** no instance found **")
