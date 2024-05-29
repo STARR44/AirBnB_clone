@@ -37,7 +37,7 @@ class FileStorage:
         Args:
         obj(object): instance of a class
         """
-        
+
         key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
 
@@ -61,7 +61,10 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 tmp = json.load(f)
             for key, value in tmp.items():
-                FileStorage.__objects[key] = classes[value['__class__']](**value)
+                class_name = value['__class__']
+                cls = classes[class_name]
+                obj = cls(**value)
+                FileStorage.__objects[key] = obj
 
         except FileNotFoundError:
-            pass # do nothing if file does not exist
+            pass  # do nothing if file does not exist

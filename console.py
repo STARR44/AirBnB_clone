@@ -46,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
                     'destroy': self.do_destroy,
                     'show': self.do_show,
                     'update': self.do_update,
-                    'arguments': "" 
+                    'arguments': ""
         }
 
         # parse line
@@ -61,7 +61,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args_list = re.findall(r'".*?"|{.*}|[^,\s]+', args)
-        print(args_list)
 
         uid = ""
         arg_1 = ""
@@ -72,11 +71,9 @@ class HBNBCommand(cmd.Cmd):
             arg_2 = args_list[2]
         except IndexError:
             pass
-       
- 
+
         globals['arguments'] = (f"{class_name} {uid} {arg_1} {arg_2}").strip()
         line = f"{cmd}(arguments)"
-        print("Arguments:", globals['arguments'])
         eval(line, globals)
 
     def do_all(self, arg):
@@ -144,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
                 objects.pop(key)  # delete key
                 models.storage.save()  # save changes
             except KeyError:
-               print("** no instance found **")
+                print("** no instance found **")
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
@@ -173,7 +170,9 @@ class HBNBCommand(cmd.Cmd):
                             for attr_name, attr_value in eval(args[2]).items():
                                 if attr_name in obj.__dict__:
                                     attr_type = type(obj.__dict__[attr_name])
-                                    setattr(obj, attr_name, attr_type(attr_value))
+                                    setattr(
+                                        obj, attr_name, attr_type(attr_value)
+                                    )
                                 else:
                                     setattr(obj, attr_name, attr_value)
                                 obj.save()
@@ -196,7 +195,7 @@ class HBNBCommand(cmd.Cmd):
 
             except KeyError:
                 print("** no instance found **")
-    
+
     def do_quit(self, arg):
         """Exits the program"""
         return True
@@ -223,7 +222,7 @@ class HBNBCommand(cmd.Cmd):
 
         else:
             print("** class doesn't exist **")
-        
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

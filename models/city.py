@@ -7,4 +7,4 @@ class City(BaseModel):
     """This classs represents a city"""
 
     state_id = ""
-    name = "" 
+    name = ""

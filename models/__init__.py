@@ -4,4 +4,4 @@ from .engine.file_storage import FileStorage
 
 
 storage = FileStorage()
-storage.reload() # Load data stored JSON file
+storage.reload()  # Load data stored JSON file
